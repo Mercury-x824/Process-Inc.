@@ -3,299 +3,342 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Process Inc. — Roblox Dev</title>
+  <title>Process Inc. — Dev Dashboard & Landing</title>
   <style>
-    /* ---------- Base ---------- */
-    :root{
-      --bg:#07070a; --panel:#0f1620; --accent:#66fcf1; --muted:#9aa5ad; --glass:rgba(255,255,255,0.04);
-      --glass-2:rgba(102,252,241,0.06);
-    }
+    :root{--bg:#070710;--panel:#0d1217;--accent:#66fcf1;--accent-2:#45a29e;--muted:#9aa5ad;--glass:rgba(255,255,255,0.03)}
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#05060a 0%, #0b0e13 100%);font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--muted);-webkit-font-smoothing:antialiased}
+    html,body{height:100%;margin:0;background:radial-gradient(1200px 400px at 10% 10%, rgba(102,252,241,0.03), transparent), linear-gradient(180deg,#040506 0%, #071018 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--muted);-webkit-font-smoothing:antialiased}
 
-    /* ---------- Layout ---------- */
-    header{position:fixed;left:0;right:0;top:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);backdrop-filter:blur(6px);z-index:40;border-bottom:1px solid rgba(255,255,255,0.02)}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:52px;height:52px;border-radius:10px;overflow:hidden;display:inline-block;background:linear-gradient(135deg,#1b2833,#10202a);box-shadow:0 6px 24px rgba(0,0,0,0.6);}
-    .logo img{width:100%;height:100%;object-fit:contain}
-    .title{line-height:1;color:#cfeff0}
-    nav{display:flex;gap:14px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;transition:all .25s;font-weight:600}
-    nav a.active,nav a:hover{color:var(--accent);background:linear-gradient(90deg, rgba(102,252,241,0.04), transparent)}
+    /* Layout */
+    .wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    aside{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-right:1px solid var(--glass);padding:24px;backdrop-filter:blur(6px)}
+    .logo{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .logo img{width:46px;height:46px;border-radius:10px;object-fit:cover}
+    .brand{font-weight:800;color:#e8ffff}
+    nav{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .nav-item{padding:10px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .nav-item.active{background:linear-gradient(90deg, rgba(102,252,241,0.04), transparent);color:var(--accent)}
 
-    main{padding-top:92px;max-width:1200px;margin:0 auto}
+    header{position:fixed;left:260px;right:0;top:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.02);z-index:30}
+    header .controls{display:flex;gap:12px;align-items:center}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041014;padding:8px 12px;border-radius:10px;font-weight:800;border:none;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px 10px;border-radius:10px}
 
-    /* ---------- Hero ---------- */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;padding:48px 28px}
-    .hero-left{padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 40px rgba(0,0,0,0.6);border:1px solid var(--glass-2);overflow:hidden;position:relative}
-    .eyebrow{color:var(--accent);font-weight:700;letter-spacing:1px}
-    h1{color:#e6fefc;margin:6px 0 12px;font-size:36px}
-    p.lead{color:var(--muted);margin:0 0 18px}
+    main{margin-left:260px;padding-top:92px;max-width:1200px;margin-right:auto}
+    .container{padding:28px}
 
-    /* Animated circuit background */
-    .circuit{position:absolute;right:-80px;top:-40px;width:480px;height:480px;opacity:0.06;filter:blur(2px);transform:rotate(8deg);}
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-bottom:20px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid var(--glass);box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+    .hero h1{margin:0;color:#eaffff;font-size:28px}
+    .hero p{margin:8px 0 0;color:var(--muted)}
+    .stats{display:flex;gap:8px;margin-top:14px}
+    .stat{flex:1;padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(102,252,241,0.02), transparent);text-align:center}
+    .stat strong{display:block;color:var(--accent);font-size:18px}
 
-    /* CTA */
-    .cta{display:flex;gap:12px;align-items:center}
-    .btn{background:linear-gradient(90deg,var(--accent),#45a29e);color:#041014;padding:10px 14px;border-radius:10px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(102,252,241,0.08)}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:10px 12px;border-radius:10px}
+    /* Dashboard grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .card h3{margin:0 0 8px;color:#e7fffe}
 
-    /* Right card */
-    .hero-right{padding:18px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid var(--glass);}
-    .stat{display:flex;justify-content:space-between;padding:12px 0}
-
-    /* ---------- Sections & Tabs ---------- */
-    section{padding:36px 28px}
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 24px rgba(0,0,0,0.6)}
-
-    .tabs{display:flex;gap:8px;margin-bottom:18px}
-    .tab{padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;background:transparent;border:1px solid transparent;color:var(--muted)}
+    /* Tabs inside page */
+    .tabs{display:flex;gap:8px;margin-bottom:12px}
+    .tab{padding:8px 12px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid transparent;color:var(--muted);font-weight:700}
     .tab.active{background:linear-gradient(90deg, rgba(102,252,241,0.06), transparent);color:var(--accent);border:1px solid rgba(102,252,241,0.06)}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
-    .card h3{margin:0 0 6px;color:#dff6f6}
-    .price{font-weight:900;color:var(--accent);font-size:18px}
-    .muted{color:var(--muted);font-size:13px}
+    /* Pricing list */
+    .pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .pricing .tier{padding:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .price{font-weight:900;color:var(--accent);font-size:16px;margin-top:6px}
 
     /* Calculator */
-    .calculator{display:flex;flex-direction:column;gap:12px}
-    .row{display:flex;gap:8px}
-    input,select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--muted);outline:none}
-    .result{padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(102,252,241,0.03), transparent);color:var(--accent);font-weight:800}
+    .calculator{display:flex;flex-direction:column;gap:8px}
+    input,select,textarea{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--muted);outline:none}
+    .result{padding:12px;border-radius:8px;background:linear-gradient(90deg, rgba(102,252,241,0.03), transparent);color:var(--accent);font-weight:800}
 
-    /* Footer */
-    footer{padding:28px;text-align:center;color:var(--muted)}
+    /* Contact form */
+    form.contact{display:flex;flex-direction:column;gap:8px}
+    form.contact button{width:160px}
+
+    footer{padding:20px;text-align:center;color:var(--muted);margin-top:24px}
+
+    /* Animations */
+    .fadeIn{opacity:0;transform:translateY(8px);animation:fadeIn .7s ease forwards}
+    @keyframes fadeIn{to{opacity:1;transform:none}}
 
     /* Responsive */
-    @media (max-width:900px){.hero{grid-template-columns:1fr;}.hero-right{order:2}.hero-left{order:1}}
-
-    /* Smooth entrance */
-    .fade-in{opacity:0;transform:translateY(8px);animation:enter .7s ease forwards}
-    @keyframes enter{to{opacity:1;transform:none}}
-
-    /* small utility */
-    .small{font-size:13px;color:var(--muted)}
+    @media (max-width:1000px){.wrap{grid-template-columns:1fr}aside{position:relative;display:flex;flex-direction:row;overflow:auto;height:72px;padding:12px}header{left:0}main{margin-left:0;padding-top:92px}.hero{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo"><img src="/mnt/data/edac2168-4ad7-460d-96f7-40927c8dcf87.png" alt="Process Inc logo"/></div>
-      <div class="title"><div style="font-weight:800;color:#e9fffe">Process Inc.</div><div class="small">Roblox Development · Systems · Bots</div></div>
-    </div>
-    <nav>
-      <a href="#hero" class="active">Home</a>
-      <a href="#services">Services</a>
-      <a href="#builds">Builds</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <div class="wrap">
+    <aside>
+      <div class="logo"><img src="https://tr.rbxcdn.com/180DAY-a07513f6ff14bf709e2efea284c3c402/150/150/Image/Webp/noFilter" alt="logo"/><div class="brand">Process Inc.</div></div>
+      <div class="small">TruSnooze · 3 yrs dev · Lua · HTML · Java · Bots</div>
+      <nav style="margin-top:16px">
+        <div class="nav-item active" data-target="home">Home</div>
+        <div class="nav-item" data-target="scripts">Scripts</div>
+        <div class="nav-item" data-target="builds">Builds</div>
+        <div class="nav-item" data-target="calculator">Calculator</div>
+        <div class="nav-item" data-target="contact">Contact</div>
+      </nav>
+      <div style="margin-top:18px" class="small">Process Inc. — clean systems, fast delivery</div>
+    </aside>
 
-  <main>
-    <section id="hero" class="hero">
-      <div class="hero-left panel fade-in">
-        <div class="eyebrow">PROCESS INC.</div>
-        <h1>Futuristic Roblox systems — made clean.</h1>
-        <p class="lead">Specialising in Lua systems, modular server-client features and bot integrations. Fast delivery, clean code, and game-ready systems.</p>
-        <div class="cta">
-          <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact on Discord</button>
-          <button class="ghost" onclick="toggleTheme()">Toggle Accent</button>
+    <div style="flex:1">
+      <header>
+        <div class="controls"><div style="font-weight:800;color:#e8ffff">Process Inc.</div></div>
+        <div class="controls">
+          <button class="ghost" onclick="toggleAccent()">Toggle Accent</button>
+          <a class="btn" href="https://discord.gg/Ec4jN29D" target="_blank">Join Discord</a>
         </div>
-        <svg class="circuit" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#66fcf1" stop-opacity="0.9"/><stop offset="1" stop-color="#45a29e" stop-opacity="0.6"/></linearGradient>
-          </defs>
-          <rect x="0" y="0" width="600" height="600" rx="8" fill="url(#g1)" opacity="0.02"/>
-        </svg>
-      </div>
+      </header>
 
-      <div class="hero-right fade-in panel">
-        <div class="stat"><div><strong>TruSnooze</strong><div class="small">3 years dev • Lua · HTML · Java · Bots</div></div><div class="small">Fast & Clean</div></div>
-        <div style="height:10px"></div>
-        <div class="stat"><div class="small">Discord</div><div><a href="https://discord.gg/Ec4jN29D" style="color:var(--accent);text-decoration:none">Process Inc. Server</a></div></div>
-        <div class="stat"><div class="small">Email</div><div class="small">truwty1@gmail.com</div></div>
-        <div style="height:10px"></div>
-        <div class="panel" style="margin-top:10px">
-          <div class="small">Quick Pricing Snapshot</div>
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <div style="flex:1" class="card small"><strong>Basic</strong><div class="price">R$50 - R$1,000</div></div>
-            <div style="flex:1" class="card small"><strong>Advanced</strong><div class="price">R$4,000 - R$16,000</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+      <main>
+        <div class="container">
 
-    <!-- Services Tabs -->
-    <section id="services">
-      <div class="panel fade-in">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div>
-            <h2 style="margin:0;color:#eaffff">Script Pricing & Services</h2>
-            <div class="small">Choose a tab to view script tiers and details</div>
-          </div>
-          <div class="tabs" role="tablist">
-            <div class="tab active" data-tab="scripts">Scripts</div>
-            <div class="tab" data-tab="builds">Builds</div>
-            <div class="tab" data-tab="calculator">Calculator</div>
-          </div>
-        </div>
-
-        <div id="tab-content">
-          <!-- Scripts Tab -->
-          <div class="tab-pane" data-pane="scripts">
-            <div class="grid">
-              <div class="card">
-                <h3>Basic Scripts & Utility</h3>
-                <div class="muted">50 - 200 lines</div>
-                <div style="margin-top:10px" class="price">R$50 - R$1,000<br><span class="small">£1.75 - £7.00</span></div>
-                <div class="small" style="margin-top:10px">Examples: utility modules, small GUIs, admin helpers.</div>
+          <!-- HERO / DASHBOARD MIX -->
+          <section class="hero fadeIn" id="home">
+            <div class="panel">
+              <h1>Process Inc. — Systems & Builds</h1>
+              <p>We build robust Roblox systems, modular features, and bot integrations. Choose a quote or use the calculator for a quick estimate.</p>
+              <div class="stats">
+                <div class="stat"><div class="small">Years</div><strong>3</strong></div>
+                <div class="stat"><div class="small">Active Projects</div><strong>6</strong></div>
+                <div class="stat"><div class="small">Avg Turnaround</div><strong>3–10 days</strong></div>
               </div>
-
-              <div class="card">
-                <h3>Moderate Scripts & Features</h3>
-                <div class="muted">250 - 500 lines</div>
-                <div style="margin-top:10px" class="price">R$1,500 - R$3,500<br><span class="small">£8.75 - £26.25</span></div>
-                <div class="small" style="margin-top:10px">Examples: matchmaking, shops, progression features.</div>
-              </div>
-
-              <div class="card">
-                <h3>Advanced Systems</h3>
-                <div class="muted">501 - 1,500 lines</div>
-                <div style="margin-top:10px" class="price">R$4,000 - R$16,000<br><span class="small">£28.00 - £87.50</span></div>
-                <div class="small" style="margin-top:10px">Examples: save systems, economy, cross-server features.</div>
-              </div>
-
-              <div class="card">
-                <h3>Complex Level Systems</h3>
-                <div class="muted">2,000+ lines — modular</div>
-                <div style="margin-top:10px" class="price">R$26,000+ — Custom Quote</div>
-                <div class="small" style="margin-top:10px">Large map systems, persistent worlds, full-stack services.</div>
+              <div style="margin-top:12px;display:flex;gap:8px">
+                <button class="btn" onclick="goto('calculator')">Get Estimate</button>
+                <button class="ghost" onclick="goto('contact')">Contact</button>
               </div>
             </div>
-          </div>
 
-          <!-- Builds Tab -->
-          <div class="tab-pane" data-pane="builds" style="display:none">
-            <div class="grid">
-              <div class="card"><h3>Small Builds</h3><div class="muted">Props, small interiors</div><div class="price">R$500 - R$3,000<br><span class="small">£2 - £10</span></div></div>
-              <div class="card"><h3>Medium Builds</h3><div class="muted">Shops, houses</div><div class="price">R$4,000 - R$12,000<br><span class="small">£12 - £40</span></div></div>
-              <div class="card"><h3>Large Builds</h3><div class="muted">Maps, complexes</div><div class="price">R$15,000 - R$40,000<br><span class="small">£50 - £120</span></div></div>
-              <div class="card"><h3>Massive Worlds</h3><div class="muted">Custom quote only</div><div class="price">R$50,000+<br><span class="small">£150+</span></div></div>
+            <div class="panel">
+              <h3>Quick Snapshot</h3>
+              <div style="margin-top:8px">
+                <div class="small">Basic Scripts</div>
+                <div class="price">R$50 - R$1,000</div>
+                <div style="height:8px"></div>
+                <div class="small">Advanced Systems</div>
+                <div class="price">R$4,000 - R$16,000</div>
+              </div>
             </div>
-          </div>
+          </section>
 
-          <!-- Calculator Tab -->
-          <div class="tab-pane" data-pane="calculator" style="display:none">
-            <div class="grid">
-              <div class="card" style="grid-column:span 1">
-                <h3>Pricing Calculator</h3>
-                <div class="calculator">
-                  <label class="small">Type</label>
-                  <select id="calc-type">
-                    <option value="basic">Basic Script (50-200 lines)</option>
-                    <option value="moderate">Moderate (250-500)</option>
-                    <option value="advanced">Advanced (501-1500)</option>
-                    <option value="complex">Complex (2000+)</option>
-                  </select>
+          <!-- SCRIPTS + BUILDS -->
+          <section id="scripts" style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <h2 style="margin:0;color:#eaffff">Services</h2>
+              <div class="tabs">
+                <div class="tab active" data-tab="scripts">Scripts</div>
+                <div class="tab" data-tab="builds">Builds</div>
+              </div>
+            </div>
 
-                  <label class="small">Estimated Line Count</label>
-                  <input id="calc-lines" type="number" placeholder="e.g. 600" />
-
-                  <label class="small">Extra Features</label>
-                  <select id="calc-extras">
-                    <option value="0">None</option>
-                    <option value="0.15">Database / Persistence (+15%)</option>
-                    <option value="0.10">Cross-server / Networking (+10%)</option>
-                    <option value="0.12">Custom UI & Art (+12%)</option>
-                  </select>
-
-                  <div style="display:flex;gap:8px"><button class="btn" id="calc-run">Calculate</button><button class="ghost" id="calc-reset">Reset</button></div>
-                  <div id="calc-result" class="result" style="display:none">Estimated Price: <span id="calc-price">R$0</span></div>
+            <div id="services-content">
+              <div class="pricing" data-pane="scripts">
+                <div class="tier">
+                  <strong>Basic Scripts & Utility</strong>
+                  <div class="small">50 - 200 lines</div>
+                  <div class="price">R$50 - R$1,000<br><span class="small">£1.75 - £7.00</span></div>
+                </div>
+                <div class="tier">
+                  <strong>Moderate Scripts & Features</strong>
+                  <div class="small">250 - 500 lines</div>
+                  <div class="price">R$1,500 - R$3,500<br><span class="small">£8.75 - £26.25</span></div>
+                </div>
+                <div class="tier">
+                  <strong>Advanced Systems</strong>
+                  <div class="small">501 - 1,500 lines</div>
+                  <div class="price">R$4,000 - R$16,000<br><span class="small">£28.00 - £87.50</span></div>
+                </div>
+                <div class="tier">
+                  <strong>Complex Level Systems</strong>
+                  <div class="small">2,000+ lines — modular</div>
+                  <div class="price">R$26,000+ — Custom Quote</div>
                 </div>
               </div>
 
+              <div class="pricing" data-pane="builds" style="display:none">
+                <div class="tier"><strong>Small Builds</strong><div class="small">Props, small rooms</div><div class="price">R$500 - R$3,000</div></div>
+                <div class="tier"><strong>Medium Builds</strong><div class="small">Shops, houses</div><div class="price">R$4,000 - R$12,000</div></div>
+                <div class="tier"><strong>Large Builds</strong><div class="small">Maps, complexes</div><div class="price">R$15,000 - R$40,000</div></div>
+                <div class="tier"><strong>Massive Worlds</strong><div class="small">Custom quote only</div><div class="price">R$50,000+</div></div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- GRID DASHBOARD -->
+          <section>
+            <div class="grid">
               <div class="card">
-                <h3>How it works</h3>
-                <div class="small">The calculator uses your chosen tier and line count to estimate base price, then applies extras and complexity multipliers. Real quotes may vary — request a custom quote for exact pricing.</div>
+                <h3>Live Projects</h3>
+                <div class="small">Active: 6</div>
+                <ul style="margin-top:10px;color:var(--muted)">
+                  <li>Matchmaking System (V2)</li>
+                  <li>Persistent Economy</li>
+                  <li>Admin & Moderation Suite</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <h3>Recent Commits</h3>
+                <div class="small">(Github link after deploy)</div>
+                <ol style="margin-top:10px;color:var(--muted)">
+                  <li>SaveSystem: optimize writes</li>
+                  <li>ShopModule: add discounts</li>
+                  <li>Discord Bot: slash commands</li>
+                </ol>
+              </div>
+
+              <div class="card">
+                <h3>Notes & Terms</h3>
+                <div class="small">One-life lore projects use special pricing. All code licensed per-contract. Custom quotes required for large systems.</div>
               </div>
             </div>
-          </div>
+          </section>
 
+          <!-- CALCULATOR -->
+          <section id="calculator" style="margin-top:18px">
+            <div class="panel">
+              <h2 style="margin:0;color:#eaffff">Pricing Calculator</h2>
+              <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+                <div style="flex:1;min-width:280px" class="card">
+                  <div class="calculator">
+                    <label class="small">Tier</label>
+                    <select id="calc-type">
+                      <option value="basic">Basic (50-200)</option>
+                      <option value="moderate">Moderate (250-500)</option>
+                      <option value="advanced">Advanced (501-1500)</option>
+                      <option value="complex">Complex (2000+)</option>
+                    </select>
+
+                    <label class="small">Line Count</label>
+                    <input id="calc-lines" type="number" placeholder="e.g. 600" />
+
+                    <label class="small">Extras</label>
+                    <select id="calc-extras">
+                      <option value="0">None</option>
+                      <option value="0.15">Database (+15%)</option>
+                      <option value="0.10">Cross-server (+10%)</option>
+                      <option value="0.12">Custom UI (+12%)</option>
+                    </select>
+
+                    <div style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn" id="calc-run">Calculate</button>
+                      <button class="ghost" id="calc-reset">Reset</button>
+                    </div>
+                    <div id="calc-result" class="result" style="display:none">Estimated: <span id="calc-price">R$0</span></div>
+                  </div>
+                </div>
+
+                <div style="flex:1;min-width:260px" class="card">
+                  <h3>How the estimate works</h3>
+                  <div class="small">Base price derived from tier ranges and scaled by estimated lines. Extras increase total. Final quotes provided on review.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CONTACT -->
+          <section id="contact" style="margin-top:18px">
+            <div class="panel">
+              <h2 style="margin:0;color:#eaffff">Contact</h2>
+              <div style="display:grid;grid-template-columns:1fr 360px;gap:12px;margin-top:12px">
+                <div class="card">
+                  <h3>Get in touch</h3>
+                  <p class="small">Join the Discord or send a message — we reply fast.</p>
+
+                  <!-- Contact form (FormSubmit) -->
+                  <form class="contact" action="https://formsubmit.co/truwty1@gmail.com" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_subject" value="Process Inc Website Inquiry">
+
+                    <input name="name" type="text" placeholder="Your name" required>
+                    <input name="email" type="email" placeholder="Your email" required>
+                    <input name="discord" type="text" placeholder="Discord (optional)">
+                    <textarea name="message" rows="5" placeholder="Message / Requirements" required></textarea>
+
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                      <button class="btn" type="submit">Send Message</button>
+                      <button type="button" class="ghost" onclick="copyEmail()">Copy Email</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="card">
+                  <h3>Other ways</h3>
+                  <div class="small">Discord: <strong>truwty</strong></div>
+                  <div style="height:8px"></div>
+                  <div class="small">Server: <a href="https://discord.gg/Ec4jN29D" target="_blank" style="color:var(--accent);text-decoration:none">Join Process Inc.</a></div>
+                  <div style="height:8px"></div>
+                  <div class="small">Email: <strong>truwty1@gmail.com</strong></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <footer>© Process Incorporated — Built with care.</footer>
         </div>
-
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-      <div class="panel fade-in">
-        <h2 style="margin-top:0;color:#eaffff">Contact</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>Discord</h3>
-            <div class="small">Username: <strong>truwty</strong></div>
-            <div style="margin-top:8px"><a href="https://discord.gg/Ec4jN29D" style="color:var(--accent);text-decoration:none">Join Process Inc. Server</a></div>
-          </div>
-          <div class="card">
-            <h3>Email</h3>
-            <div class="small">truwty1@gmail.com</div>
-            <div style="margin-top:12px"><button class="ghost" onclick="copyEmail()">Copy Email</button></div>
-          </div>
-          <div class="card">
-            <h3>Profile</h3>
-            <div class="small">TruSnooze — 3 years development. Competent in Lua, HTML, Java. Bot development and systems engineering.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer>© Process Incorporated — Built with care. <span class="small">Replace the logo by updating the &lt;img src&gt; in header.</span></footer>
-  </main>
+      </main>
+    </div>
+  </div>
 
   <script>
-    // ---------- Tabs ----------
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',e=>{
+      document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const t = e.currentTarget.dataset.target;
+      goto(t);
+    }));
+
+    function goto(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
+    }
+
+    // Internal tabs for services
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',e=>{
       document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
       e.currentTarget.classList.add('active');
       const id = e.currentTarget.dataset.tab;
-      document.querySelectorAll('.tab-pane').forEach(p=>p.style.display = p.dataset.pane===id ? 'block' : 'none');
-      // smooth focus
-      window.scrollTo({top:document.getElementById('services').offsetTop - 80, behavior:'smooth'})
-    }))
+      document.querySelectorAll('[data-pane]').forEach(p=>p.style.display = p.dataset.pane===id ? '' : 'none');
+    }));
 
-    // ---------- Pricing Calculator Logic ----------
+    // Pricing calculator logic
     function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
     document.getElementById('calc-run').addEventListener('click',()=>{
       const type = document.getElementById('calc-type').value;
-      const lines = Number(document.getElementById('calc-lines').value) || 0;
+      const lines = Number(document.getElementById('calc-lines').value)||0;
       const extra = Number(document.getElementById('calc-extras').value)||0;
       let base = 0;
       if(type==='basic'){ base = 50 + (clamp(lines,50,200)-50) * (950/150) }
       if(type==='moderate'){ base = 1500 + (clamp(lines,250,500)-250) * (2000/250) }
       if(type==='advanced'){ base = 4000 + (clamp(lines,501,1500)-501) * (12000/999) }
       if(type==='complex'){ base = 26000 + (clamp(lines,2000,50000)-2000) * (0.1) }
-      // apply extras
-      const total = Math.round(base * (1 + extra))
+      const total = Math.round(base * (1 + extra));
       document.getElementById('calc-price').textContent = 'R$' + total.toLocaleString();
-      document.getElementById('calc-result').style.display='block'
-    })
+      document.getElementById('calc-result').style.display = '';
+    });
     document.getElementById('calc-reset').addEventListener('click',()=>{
       document.getElementById('calc-type').value='basic';document.getElementById('calc-lines').value='';document.getElementById('calc-extras').value='0';document.getElementById('calc-result').style.display='none'
-    })
+    });
 
-    // ---------- Utility ----------
+    // copy email
     function copyEmail(){navigator.clipboard.writeText('truwty1@gmail.com');alert('Email copied to clipboard')}
 
-    // Accent toggle for a subtle animation
-    function toggleTheme(){
-      document.documentElement.style.setProperty('--accent', getComputedStyle(document.documentElement).getPropertyValue('--accent')===' #66fcf1' ? '#ffb86b' : '#66fcf1')
-      // tiny pulse
-      document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.04)'},{filter:'brightness(1)'}],{duration:600})
+    // accent toggle
+    function toggleAccent(){
+      const cur = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      document.documentElement.style.setProperty('--accent', cur==='#66fcf1' ? '#ffb86b' : '#66fcf1');
     }
 
-    // Entrance animations on load
-    window.addEventListener('load',()=>document.querySelectorAll('.fade-in').forEach((el,i)=>{setTimeout(()=>el.style.opacity=1,80*i)}))
+    // entrance
+    window.addEventListener('load',()=>document.querySelectorAll('.fadeIn').forEach((el,i)=>setTimeout(()=>el.style.opacity=1,80*i)));
   </script>
 </body>
 </html>
