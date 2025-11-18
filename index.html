@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Process Inc. — Roblox Dev</title>
+  <style>
+    /* ---------- Base ---------- */
+    :root{
+      --bg:#07070a; --panel:#0f1620; --accent:#66fcf1; --muted:#9aa5ad; --glass:rgba(255,255,255,0.04);
+      --glass-2:rgba(102,252,241,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#05060a 0%, #0b0e13 100%);font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--muted);-webkit-font-smoothing:antialiased}
+
+    /* ---------- Layout ---------- */
+    header{position:fixed;left:0;right:0;top:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);backdrop-filter:blur(6px);z-index:40;border-bottom:1px solid rgba(255,255,255,0.02)}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:52px;height:52px;border-radius:10px;overflow:hidden;display:inline-block;background:linear-gradient(135deg,#1b2833,#10202a);box-shadow:0 6px 24px rgba(0,0,0,0.6);}
+    .logo img{width:100%;height:100%;object-fit:contain}
+    .title{line-height:1;color:#cfeff0}
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;transition:all .25s;font-weight:600}
+    nav a.active,nav a:hover{color:var(--accent);background:linear-gradient(90deg, rgba(102,252,241,0.04), transparent)}
+
+    main{padding-top:92px;max-width:1200px;margin:0 auto}
+
+    /* ---------- Hero ---------- */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;padding:48px 28px}
+    .hero-left{padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 40px rgba(0,0,0,0.6);border:1px solid var(--glass-2);overflow:hidden;position:relative}
+    .eyebrow{color:var(--accent);font-weight:700;letter-spacing:1px}
+    h1{color:#e6fefc;margin:6px 0 12px;font-size:36px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+
+    /* Animated circuit background */
+    .circuit{position:absolute;right:-80px;top:-40px;width:480px;height:480px;opacity:0.06;filter:blur(2px);transform:rotate(8deg);}
+
+    /* CTA */
+    .cta{display:flex;gap:12px;align-items:center}
+    .btn{background:linear-gradient(90deg,var(--accent),#45a29e);color:#041014;padding:10px 14px;border-radius:10px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(102,252,241,0.08)}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:10px 12px;border-radius:10px}
+
+    /* Right card */
+    .hero-right{padding:18px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid var(--glass);}
+    .stat{display:flex;justify-content:space-between;padding:12px 0}
+
+    /* ---------- Sections & Tabs ---------- */
+    section{padding:36px 28px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 24px rgba(0,0,0,0.6)}
+
+    .tabs{display:flex;gap:8px;margin-bottom:18px}
+    .tab{padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;background:transparent;border:1px solid transparent;color:var(--muted)}
+    .tab.active{background:linear-gradient(90deg, rgba(102,252,241,0.06), transparent);color:var(--accent);border:1px solid rgba(102,252,241,0.06)}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+    .card h3{margin:0 0 6px;color:#dff6f6}
+    .price{font-weight:900;color:var(--accent);font-size:18px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Calculator */
+    .calculator{display:flex;flex-direction:column;gap:12px}
+    .row{display:flex;gap:8px}
+    input,select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--muted);outline:none}
+    .result{padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(102,252,241,0.03), transparent);color:var(--accent);font-weight:800}
+
+    /* Footer */
+    footer{padding:28px;text-align:center;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.hero-right{order:2}.hero-left{order:1}}
+
+    /* Smooth entrance */
+    .fade-in{opacity:0;transform:translateY(8px);animation:enter .7s ease forwards}
+    @keyframes enter{to{opacity:1;transform:none}}
+
+    /* small utility */
+    .small{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo"><img src="/mnt/data/edac2168-4ad7-460d-96f7-40927c8dcf87.png" alt="Process Inc logo"/></div>
+      <div class="title"><div style="font-weight:800;color:#e9fffe">Process Inc.</div><div class="small">Roblox Development · Systems · Bots</div></div>
+    </div>
+    <nav>
+      <a href="#hero" class="active">Home</a>
+      <a href="#services">Services</a>
+      <a href="#builds">Builds</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="hero-left panel fade-in">
+        <div class="eyebrow">PROCESS INC.</div>
+        <h1>Futuristic Roblox systems — made clean.</h1>
+        <p class="lead">Specialising in Lua systems, modular server-client features and bot integrations. Fast delivery, clean code, and game-ready systems.</p>
+        <div class="cta">
+          <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact on Discord</button>
+          <button class="ghost" onclick="toggleTheme()">Toggle Accent</button>
+        </div>
+        <svg class="circuit" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#66fcf1" stop-opacity="0.9"/><stop offset="1" stop-color="#45a29e" stop-opacity="0.6"/></linearGradient>
+          </defs>
+          <rect x="0" y="0" width="600" height="600" rx="8" fill="url(#g1)" opacity="0.02"/>
+        </svg>
+      </div>
+
+      <div class="hero-right fade-in panel">
+        <div class="stat"><div><strong>TruSnooze</strong><div class="small">3 years dev • Lua · HTML · Java · Bots</div></div><div class="small">Fast & Clean</div></div>
+        <div style="height:10px"></div>
+        <div class="stat"><div class="small">Discord</div><div><a href="https://discord.gg/Ec4jN29D" style="color:var(--accent);text-decoration:none">Process Inc. Server</a></div></div>
+        <div class="stat"><div class="small">Email</div><div class="small">truwty1@gmail.com</div></div>
+        <div style="height:10px"></div>
+        <div class="panel" style="margin-top:10px">
+          <div class="small">Quick Pricing Snapshot</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <div style="flex:1" class="card small"><strong>Basic</strong><div class="price">R$50 - R$1,000</div></div>
+            <div style="flex:1" class="card small"><strong>Advanced</strong><div class="price">R$4,000 - R$16,000</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Tabs -->
+    <section id="services">
+      <div class="panel fade-in">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <h2 style="margin:0;color:#eaffff">Script Pricing & Services</h2>
+            <div class="small">Choose a tab to view script tiers and details</div>
+          </div>
+          <div class="tabs" role="tablist">
+            <div class="tab active" data-tab="scripts">Scripts</div>
+            <div class="tab" data-tab="builds">Builds</div>
+            <div class="tab" data-tab="calculator">Calculator</div>
+          </div>
+        </div>
+
+        <div id="tab-content">
+          <!-- Scripts Tab -->
+          <div class="tab-pane" data-pane="scripts">
+            <div class="grid">
+              <div class="card">
+                <h3>Basic Scripts & Utility</h3>
+                <div class="muted">50 - 200 lines</div>
+                <div style="margin-top:10px" class="price">R$50 - R$1,000<br><span class="small">£1.75 - £7.00</span></div>
+                <div class="small" style="margin-top:10px">Examples: utility modules, small GUIs, admin helpers.</div>
+              </div>
+
+              <div class="card">
+                <h3>Moderate Scripts & Features</h3>
+                <div class="muted">250 - 500 lines</div>
+                <div style="margin-top:10px" class="price">R$1,500 - R$3,500<br><span class="small">£8.75 - £26.25</span></div>
+                <div class="small" style="margin-top:10px">Examples: matchmaking, shops, progression features.</div>
+              </div>
+
+              <div class="card">
+                <h3>Advanced Systems</h3>
+                <div class="muted">501 - 1,500 lines</div>
+                <div style="margin-top:10px" class="price">R$4,000 - R$16,000<br><span class="small">£28.00 - £87.50</span></div>
+                <div class="small" style="margin-top:10px">Examples: save systems, economy, cross-server features.</div>
+              </div>
+
+              <div class="card">
+                <h3>Complex Level Systems</h3>
+                <div class="muted">2,000+ lines — modular</div>
+                <div style="margin-top:10px" class="price">R$26,000+ — Custom Quote</div>
+                <div class="small" style="margin-top:10px">Large map systems, persistent worlds, full-stack services.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Builds Tab -->
+          <div class="tab-pane" data-pane="builds" style="display:none">
+            <div class="grid">
+              <div class="card"><h3>Small Builds</h3><div class="muted">Props, small interiors</div><div class="price">R$500 - R$3,000<br><span class="small">£2 - £10</span></div></div>
+              <div class="card"><h3>Medium Builds</h3><div class="muted">Shops, houses</div><div class="price">R$4,000 - R$12,000<br><span class="small">£12 - £40</span></div></div>
+              <div class="card"><h3>Large Builds</h3><div class="muted">Maps, complexes</div><div class="price">R$15,000 - R$40,000<br><span class="small">£50 - £120</span></div></div>
+              <div class="card"><h3>Massive Worlds</h3><div class="muted">Custom quote only</div><div class="price">R$50,000+<br><span class="small">£150+</span></div></div>
+            </div>
+          </div>
+
+          <!-- Calculator Tab -->
+          <div class="tab-pane" data-pane="calculator" style="display:none">
+            <div class="grid">
+              <div class="card" style="grid-column:span 1">
+                <h3>Pricing Calculator</h3>
+                <div class="calculator">
+                  <label class="small">Type</label>
+                  <select id="calc-type">
+                    <option value="basic">Basic Script (50-200 lines)</option>
+                    <option value="moderate">Moderate (250-500)</option>
+                    <option value="advanced">Advanced (501-1500)</option>
+                    <option value="complex">Complex (2000+)</option>
+                  </select>
+
+                  <label class="small">Estimated Line Count</label>
+                  <input id="calc-lines" type="number" placeholder="e.g. 600" />
+
+                  <label class="small">Extra Features</label>
+                  <select id="calc-extras">
+                    <option value="0">None</option>
+                    <option value="0.15">Database / Persistence (+15%)</option>
+                    <option value="0.10">Cross-server / Networking (+10%)</option>
+                    <option value="0.12">Custom UI & Art (+12%)</option>
+                  </select>
+
+                  <div style="display:flex;gap:8px"><button class="btn" id="calc-run">Calculate</button><button class="ghost" id="calc-reset">Reset</button></div>
+                  <div id="calc-result" class="result" style="display:none">Estimated Price: <span id="calc-price">R$0</span></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>How it works</h3>
+                <div class="small">The calculator uses your chosen tier and line count to estimate base price, then applies extras and complexity multipliers. Real quotes may vary — request a custom quote for exact pricing.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="panel fade-in">
+        <h2 style="margin-top:0;color:#eaffff">Contact</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Discord</h3>
+            <div class="small">Username: <strong>truwty</strong></div>
+            <div style="margin-top:8px"><a href="https://discord.gg/Ec4jN29D" style="color:var(--accent);text-decoration:none">Join Process Inc. Server</a></div>
+          </div>
+          <div class="card">
+            <h3>Email</h3>
+            <div class="small">truwty1@gmail.com</div>
+            <div style="margin-top:12px"><button class="ghost" onclick="copyEmail()">Copy Email</button></div>
+          </div>
+          <div class="card">
+            <h3>Profile</h3>
+            <div class="small">TruSnooze — 3 years development. Competent in Lua, HTML, Java. Bot development and systems engineering.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© Process Incorporated — Built with care. <span class="small">Replace the logo by updating the &lt;img src&gt; in header.</span></footer>
+  </main>
+
+  <script>
+    // ---------- Tabs ----------
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',e=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const id = e.currentTarget.dataset.tab;
+      document.querySelectorAll('.tab-pane').forEach(p=>p.style.display = p.dataset.pane===id ? 'block' : 'none');
+      // smooth focus
+      window.scrollTo({top:document.getElementById('services').offsetTop - 80, behavior:'smooth'})
+    }))
+
+    // ---------- Pricing Calculator Logic ----------
+    function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+    document.getElementById('calc-run').addEventListener('click',()=>{
+      const type = document.getElementById('calc-type').value;
+      const lines = Number(document.getElementById('calc-lines').value) || 0;
+      const extra = Number(document.getElementById('calc-extras').value)||0;
+      let base = 0;
+      if(type==='basic'){ base = 50 + (clamp(lines,50,200)-50) * (950/150) }
+      if(type==='moderate'){ base = 1500 + (clamp(lines,250,500)-250) * (2000/250) }
+      if(type==='advanced'){ base = 4000 + (clamp(lines,501,1500)-501) * (12000/999) }
+      if(type==='complex'){ base = 26000 + (clamp(lines,2000,50000)-2000) * (0.1) }
+      // apply extras
+      const total = Math.round(base * (1 + extra))
+      document.getElementById('calc-price').textContent = 'R$' + total.toLocaleString();
+      document.getElementById('calc-result').style.display='block'
+    })
+    document.getElementById('calc-reset').addEventListener('click',()=>{
+      document.getElementById('calc-type').value='basic';document.getElementById('calc-lines').value='';document.getElementById('calc-extras').value='0';document.getElementById('calc-result').style.display='none'
+    })
+
+    // ---------- Utility ----------
+    function copyEmail(){navigator.clipboard.writeText('truwty1@gmail.com');alert('Email copied to clipboard')}
+
+    // Accent toggle for a subtle animation
+    function toggleTheme(){
+      document.documentElement.style.setProperty('--accent', getComputedStyle(document.documentElement).getPropertyValue('--accent')===' #66fcf1' ? '#ffb86b' : '#66fcf1')
+      // tiny pulse
+      document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.04)'},{filter:'brightness(1)'}],{duration:600})
+    }
+
+    // Entrance animations on load
+    window.addEventListener('load',()=>document.querySelectorAll('.fade-in').forEach((el,i)=>{setTimeout(()=>el.style.opacity=1,80*i)}))
+  </script>
+</body>
+</html>
